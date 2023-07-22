@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management App -Alpha Day 5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-firestore.js"></script>
+
+
+    <script defer src="main.js"></script>
+</head>
+
+<body data-nav-state="closed">
+    <div class="wrapper">
+        <!-- Login Page -->
+        <div id="loginPage">
+            <div class="form">
+                <div class="logo">
+                    
+                    <img src="https://firebasestorage.googleapis.com/v0/b/student-details-manager.appspot.com/o/CSVTU.png?alt=media&token=a0200946-ff89-4ffc-8085-00330d71b99b" alt="">
+                </div>
+                <div class="msg">Login To Dashboard</div>
+                <div class="field icon-left">
+                    <div class="icon">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/student-details-manager.appspot.com/o/username.svg?alt=media&token=692003b1-83bf-4e6c-bd34-5dd6bc6a983a" alt="">
+                    </div>
+                    <input type="text" name="username" placeholder="Username" id="loginPageUsername">
+                </div>
+                <div class="field icon-left">
+                    <div class="icon">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/student-details-manager.appspot.com/o/lock.svg?alt=media&token=02be8110-61f4-4403-8cd3-4dfd0b9bfa4b" alt="">
+                    </div>
+                    <input type="password" name="password" placeholder="Password" id="loginPagePassword">
+                </div>
+                <div class="action-field linked-text">
+                    <a href="#" onclick="alert('Contact your administrator for further inquiry')">Forgot Password?</a>
+                </div>
+                <div class="action-field">
+                    <button id="loginPageLoginButton">
+                        <span>Login</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Main Page -->
+        <div class="page" id="mainApp">
+            <!-- Nav Section -->
+            <nav id="siteNav">
+                <div class="site-info">
+                    <div class="site-logo" onclick="toggleNav()">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/student-details-manager.appspot.com/o/site-logo.svg?alt=media&token=74320c4a-2e49-444e-9e7b-6169344ab799" alt="">
+                    </div>
+                    <div class="site-name">
+                        Management
+                    </div>
+                </div>
+                <div class="menu-list sidebar">
+                    <div class="item" id="dashboardButton">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <title>dashboard-level</title>
+                                <g>
+                                    <path fill="none" stroke-width="2" stroke-miterlimit="10" stroke-linejoin="miter"
+                                        stroke-linecap="butt" d="M1.4 15h21.2"></path>
+                                    <path fill="none" stroke-width="2" stroke-miterlimit="10" stroke-linejoin="miter"
+                                        stroke-linecap="butt" d="M7 6l5 9"></path>
+                                    <circle fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10"
+                                        cx="12" cy="12" r="11" stroke-linejoin="miter"></circle>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="title">Dashboard</div>
+                    </div>
+
+                    <div class="item" id="facultyButton" >
+                        <div class="icon">
+                            <svg transform="scale(1.3)" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512"
+                                style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                                <g>
+                                    <g>
+                                        <path
+                                            d="M288.305,139.538h-64.611c-44.907,0-81.442,36.535-81.442,81.442v102.617c0,8.997,7.292,16.288,16.288,16.288h19.503
+                                    l10.392,156.901c0.57,8.557,7.677,15.213,16.256,15.213h103.16c8.6,0,15.713-6.684,16.256-15.262L334,339.885h19.459
+                                    c8.997,0,16.288-7.292,16.288-16.288V220.98C369.748,176.073,333.213,139.538,288.305,139.538z M337.165,307.303h-18.46
+                                    c-8.6,0-15.713,6.684-16.256,15.268l-9.892,156.852h-72.625l-10.387-156.901c-0.57-8.557-7.677-15.213-16.256-15.213h-18.46
+                                    V220.98c0-26.941,21.924-48.865,48.865-48.865H288.3c26.947,0,48.865,21.924,48.865,48.865V307.303z" />
+                                    </g>
+                                </g>
+                                <g>
+                                    <g>
+                                        <path d="M255.729,0c-35.927,0-65.154,29.227-65.154,65.154s29.227,65.154,65.154,65.154c35.921,0,65.154-29.227,65.154-65.154
+                                    S291.655,0,255.729,0z M255.729,97.731c-17.966,0-32.577-14.611-32.577-32.577c0-17.966,14.611-32.577,32.577-32.577
+                                    s32.577,14.611,32.577,32.577C288.305,83.12,273.695,97.731,255.729,97.731z" />
+                                    </g>
+                                </g>
+                                <g>
+                                    <g>
+                                        <path
+                                            d="M255.729,363.232c-8.997,0-16.288,7.292-16.288,16.288v115.648c0,8.997,7.292,16.288,16.288,16.288
+                                    c8.991,0,16.288-7.292,16.288-16.288V379.521C272.017,370.524,264.725,363.232,255.729,363.232z" />
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="title">Faculty</div>
+                    </div>
+
+                    <div class="item" id="studentButton">
+                        <div class="icon">
+                            <svg transform="scale(1.3)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                                width="512" height="512">
+                                <path stroke-width="16"
+                                    d="M452,345.938V227.215l15.981-6.655c11.182-4.655,12.852-11.448,12.853-15.083s-1.67-10.429-12.852-15.085L279.4,111.872c-13.121-5.463-33.677-5.463-46.8,0L44.018,190.392c-11.182,4.656-12.851,11.45-12.851,15.085s1.67,10.428,12.851,15.083L109,247.617v97.748A6.7,6.7,0,0,0,116,352h9.962c36.532,0,73.277,33.715,97.592,55.9,16.269,14.848,23.76,21.5,30.82,21.5,6.943,0,14.4-6.7,30.594-21.556,24.195-22.186,60.758-55.85,96.2-55.85H393a6.7,6.7,0,0,0,7-6.635v-96.5l38-15.822v112.8a36.983,36.983,0,1,0,14,.09ZM45.627,205.477a13.725,13.725,0,0,1,3.772-2.162L237.981,124.8c9.6-4,26.439-4,36.037,0L462.6,203.315a13.72,13.72,0,0,1,3.773,2.162,13.763,13.763,0,0,1-3.772,2.16l-188.582,78.52c-9.6,4-26.439,4-36.037,0L49.4,207.637A13.763,13.763,0,0,1,45.627,205.477ZM386,338h-4.837c-40.884,0-79.863,35.926-105.656,59.577-7.847,7.195-17.523,16.159-21.165,17.706-3.678-1.5-13.438-10.545-21.351-17.766C207.079,373.871,167.921,338,125.962,338H123V253.446l109.6,45.635c6.56,2.731,14.98,4.1,23.4,4.1s16.839-1.367,23.4-4.1L386,254.7Zm58.752,67.448a23.115,23.115,0,1,1,23-23.114A23.085,23.085,0,0,1,444.752,405.448Z" />
+                            </svg>
+                        </div>
+                        <div class="title">Students</div>
+                    </div>
+
+                    <div class="item" id="examButton">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                                <title>notes</title>
+                                <g fill="#545454">
+                                    <path
+                                        d="M15.165.097c-1.287.256-2.536 1.356-2.949 2.599L12.115 3h-1.138c-1.056 0-1.158.01-1.417.14a.848.848 0 0 0-.42.42C9.004 3.833 9 3.883 9 6s.003 2.167.14 2.44a.848.848 0 0 0 .42.42L9.84 9h12.322l.279-.14a.848.848 0 0 0 .42-.42c.137-.273.14-.323.14-2.44s-.003-2.167-.14-2.44a.848.848 0 0 0-.42-.42c-.259-.13-.361-.14-1.417-.14h-1.138l-.101-.304c-.218-.657-.772-1.41-1.37-1.862-.95-.719-2.067-.972-3.249-.737m1.556 2.034C17.417 2.391 18 3.196 18 3.895c0 .408.225.796.56.964.257.13.363.141 1.36.141H21v2H11V5h1.08c.997 0 1.103-.01 1.36-.14.335-.17.56-.557.56-.965 0-.688.58-1.5 1.26-1.76a2.15 2.15 0 0 1 1.461-.004m-13.16 2.01a.848.848 0 0 0-.42.42L3 4.838v26.322l.14.279a.848.848 0 0 0 .42.42l.279.14h24.322l.279-.14a.848.848 0 0 0 .42-.42l.14-.279V4.839l-.14-.279a.848.848 0 0 0-.42-.42C28.18 4.01 28.08 4 27 4s-1.18.01-1.44.14c-.3.152-.56.55-.56.86 0 .089.063.287.14.44.212.419.535.56 1.28.56H27v24H5V6h.58c.745 0 1.068-.141 1.28-.56.176-.35.176-.53 0-.88a.848.848 0 0 0-.42-.42C6.18 4.01 6.08 4 5 4s-1.18.01-1.44.14m6 9c-.3.152-.56.55-.56.86 0 .31.26.708.56.86l.279.14h12.322l.279-.14c.3-.152.56-.55.56-.86 0-.31-.26-.708-.56-.86L22.16 13H9.839l-.279.14m0 5c-.3.152-.56.55-.56.86 0 .31.26.708.56.86l.279.14h12.322l.279-.14c.3-.152.56-.55.56-.86 0-.31-.26-.708-.56-.86L22.16 18H9.839l-.279.14m0 5c-.3.152-.56.55-.56.86 0 .31.26.708.56.86.276.139.305.14 2.94.14s2.664-.001 2.94-.14c.3-.152.56-.55.56-.86 0-.31-.26-.708-.56-.86-.276-.139-.305-.14-2.94-.14s-2.664.001-2.94.14">
+                                    </path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="title">Exams</div>
+                    </div>
+
+                    <div style="flex:1;"></div>
+
+                    <div class="item" id="profileButton">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <title>single-01</title>
+                                <g>
+                                    <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10"
+                                        d="M12 12a5 5 0 0 1-5-5V6a5 5 0 0 1 10 0v1a5 5 0 0 1-5 5z"
+                                        stroke-linejoin="miter"></path>
+                                    <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10"
+                                        d="M22 20.908a3.99 3.99 0 0 0-2.934-3.856C17.172 16.535 14.586 16 12 16s-5.172.535-7.066 1.052A3.99 3.99 0 0 0 2 20.908V23h20v-2.092z"
+                                        stroke-linejoin="miter"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="title">Profile</div>
+                    </div>
+
+                    <div class="item" id="aboutUsButton">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <title>multiple-11</title>
+                                <g>
+                                    <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10"
+                                        d="M4 7a2 2 0 1 1 0-4 2 2 0 1 1 0 4z" stroke-linejoin="miter"></path>
+                                    <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10"
+                                        d="M6 21H3v-4H1v-5a2 2 0 0 1 2-2h1" stroke-linejoin="miter"></path>
+                                    <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10"
+                                        d="M20 7a2 2 0 1 0 0-4 2 2 0 1 0 0 4z" stroke-linejoin="miter"></path>
+                                    <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10"
+                                        d="M18 21h3v-4h2v-5a2 2 0 0 0-2-2h-1" stroke-linejoin="miter"></path>
+                                    <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10"
+                                        d="M12 7a3 3 0 1 1 0-6 3 3 0 1 1 0 6z" stroke-linejoin="miter"></path>
+                                    <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10"
+                                        d="M15 23H9v-6H7v-5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v6h-2v5z"
+                                        stroke-linejoin="miter"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="title">About us</div>
+                    </div>
+
+                    <div class="item" id="settingsButton">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <title>settings-gear-63</title>
+                                <g>
+                                    <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10"
+                                        d="M23 14v-4h-3.262a7.968 7.968 0 0 0-.852-2.058l2.306-2.306-2.828-2.828-2.306 2.306A7.968 7.968 0 0 0 14 4.262V1h-4v3.262a7.968 7.968 0 0 0-2.058.852L5.636 2.808 2.808 5.636l2.306 2.306A7.968 7.968 0 0 0 4.262 10H1v4h3.262c.189.732.477 1.422.852 2.058l-2.306 2.306 2.828 2.828 2.306-2.306a7.953 7.953 0 0 0 2.058.852V23h4v-3.262a7.968 7.968 0 0 0 2.058-.852l2.306 2.306 2.828-2.828-2.306-2.306A7.953 7.953 0 0 0 19.738 14H23z"
+                                        stroke-linejoin="miter"></path>
+                                    <circle fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10"
+                                        cx="12" cy="12" r="3" stroke-linejoin="miter"></circle>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="title">Settings</div>
+                    </div>
+
+                    <div class="item" id="logoutButton">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <title>ic_exit_to_app_24px</title>
+                                <g>
+                                    <path
+                                        d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z">
+                                    </path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="title">Logout</div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Section -->
+            <main id="siteMain">
+
+                <!-- Dashboard -->
+                <div class="page" id="dashboard" data-page-state="hidden">
+                    <header>
+                        <div class="title">Dashboard</div>
+                    </header>
+                    <div class="content">
+                        <div class="cards">
+                            <div class="row">
+                                <div class="card" onclick="appPageManager.show(student);">
+                                    <div class="img">
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/student-details-manager.appspot.com/o/student-icon.svg?alt=media&token=20de8b73-0548-44dc-9ef1-312773620cdc" alt="">
+                                    </div>
+                                    <div class="count" id="studentCount">
+                                        200
+                                    </div>
+                                </div>
+                                <div class="card" onclick="appPageManager.show(teacher);">
+                                    <div class="img">
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/student-details-manager.appspot.com/o/teacher-icon.svg?alt=media&token=830b5a59-2567-4ce4-a490-bfcf2ba21984" alt="">
+                                    </div>
+                                    <div class="count" id="teacherCount">
+                                        20
+                                    </div>
+                                </div>
+                            </div>
+                            <h4>Quick Links</h4>
+                            <div class="quick-links">
+                                <div class="link" onclick="appPageManager.show(student);">Students Page</div>
+                                <div class="link" onclick="appPageManager.show(addStudentPage);">Add Students</div>
+                                <div class="link" onclick="appPageManager.show(teacher);">Teachers Page</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teacher Page -->
+                <div class="page" id="teacher" data-page-state="hidden">
+                    <header>
+                        <div class="title">Teacher</div>
+                        <div class="actions">
+                            <div class="form">
+                                <div class="row">
+                                    <div class="field icon-right">
+                                        <input type="text" placeholder="Search Teacher" data-table="#teacherQueryResult"
+                                            data-count="#count">
+                                        <div class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24">
+                                                <g>
+                                                    <path
+                                                        d="M22.707,19.879l-4.37-4.37C19.386,13.928,20,12.035,20,10c0-5.514-4.486-10-10-10S0,4.486,0,10 s4.486,10,10,10c2.035,0,3.928-0.614,5.509-1.663l4.369,4.37c0.391,0.391,1.024,0.391,1.414,0l1.414-1.414 C23.097,20.902,23.098,20.269,22.707,19.879z M2,10c0-4.411,3.589-8,8-8s8,3.589,8,8s-3.589,8-8,8S2,14.411,2,10z">
+                                                    </path>
+                                                </g>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn" id="addTeacherButton">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                                    <title>ic_add_48px</title>
+                                    <g>
+                                        <path d="M38 26H26v12h-4V26H10v-4h12V10h4v12h12v4z"></path>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="content">
+                        <section class="query-result">
+                            <table id="teacherQueryResult">
+                                <tr data-visible="true">
+                                    <th>Enroll</th>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Roll No</th>
+                                    <th>Date of Birth</th>
+                                </tr>
+                            </table>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Student Page -->
+                <div class="page" id="student" data-page-state="hidden">
+                    <header>
+                        <div class="title">Student</div>
+                        <div class="actions">
+                            <div class="form">
+                                <div class="row">
+                                    <div class="field icon-right">
+                                        <input type="text" placeholder="Search Student" data-table="#studentQueryResult"
+                                            data-count="#count">
+                                        <div class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24">
+                                                <g>
+                                                    <path
+                                                        d="M22.707,19.879l-4.37-4.37C19.386,13.928,20,12.035,20,10c0-5.514-4.486-10-10-10S0,4.486,0,10 s4.486,10,10,10c2.035,0,3.928-0.614,5.509-1.663l4.369,4.37c0.391,0.391,1.024,0.391,1.414,0l1.414-1.414 C23.097,20.902,23.098,20.269,22.707,19.879z M2,10c0-4.411,3.589-8,8-8s8,3.589,8,8s-3.589,8-8,8S2,14.411,2,10z">
+                                                    </path>
+                                                </g>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="field icon-right">
+                                        <select id="studentYear">
+                                            <option value="1st">First Year</option>
+                                            <option value="2nd">Second Year</option>
+                                            <option value="3rd">Third Year</option>
+                                        </select>
+                                        <div class="icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 32 32">
+                                                <g>
+                                                    <path
+                                                        d="M6.56.14a.848.848 0 0 0-.42.42C6.01.817 6 .923 6 1.92V3H3.42C.868 3 .836 3.002.56 3.14a.848.848 0 0 0-.42.42L0 3.84v27.322l.14.279a.848.848 0 0 0 .42.42L.84 32h30.322l.279-.14a.848.848 0 0 0 .42-.42l.14-.279V3.839l-.14-.279a.848.848 0 0 0-.42-.42c-.276-.138-.308-.14-2.86-.14H26V1.92c0-.997-.01-1.103-.14-1.36a.848.848 0 0 0-.42-.42C25.167.004 25.117 0 23 0s-2.167.003-2.44.14a.848.848 0 0 0-.42.42c-.13.257-.14.363-.14 1.36V3h-8V1.92c0-.997-.01-1.103-.14-1.36a.848.848 0 0 0-.42-.42C11.167.004 11.117 0 9 0S6.833.003 6.56.14M10 4v2H8V2h2v2m14 0v2h-2V2h2v2M6 6.08c0 .997.01 1.103.14 1.36a.848.848 0 0 0 .42.42c.273.137.323.14 2.44.14s2.167-.003 2.44-.14a.848.848 0 0 0 .42-.42c.13-.257.14-.363.14-1.36V5h8v1.08c0 .997.01 1.103.14 1.36a.848.848 0 0 0 .42.42c.273.137.323.14 2.44.14s2.167-.003 2.44-.14a.848.848 0 0 0 .42-.42c.13-.257.14-.363.14-1.36V5h4v5H2V5h4v1.08M30 21v9H2V12h28v9">
+                                                    </path>
+                                                </g>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn" id="addStudentButton">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                                    <title>ic_add_48px</title>
+                                    <g>
+                                        <path d="M38 26H26v12h-4V26H10v-4h12V10h4v12h12v4z"></path>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="content">
+                        <section class="query-result">
+                            <table id="studentQueryResult">
+                                <tr data-visible="true">
+                                    <th>Enroll</th>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Roll No</th>
+                                    <th>Date of Birth</th>
+                                </tr>
+                            </table>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Add Student Page -->
+                <div class="page" id="addStudentPage" data-page-state="hidden">
+                    <header>
+                        <div class="title">Edit Student</div>
+                        <div class="actions">
+                            <div class="btn" id="closeStudentButton">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+                                    <title>ic_close_36px</title>
+                                    <g>
+                                        <path
+                                            d="M28.5 9.62L26.38 7.5 18 15.88 9.62 7.5 7.5 9.62 15.88 18 7.5 26.38l2.12 2.12L18 20.12l8.38 8.38 2.12-2.12L20.12 18z">
+                                        </path>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="content">
+                        <section>
+                            <div class="form">
+                                <div class="field">
+                                    <input type="text" minlength="6" maxlength="6" required placeholder="Enrollment No*"
+                                        id="newStudentEnrollNo">
+                                </div>
+                                <div class="field">
+                                    <input type="text" placeholder="Name" id="newStudentName">
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <select id="newStudentGender">
+                                            <option value="" selected disabled>Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="field">
+                                        <input type="date" placeholder="Date Of Birth" id="newStudentDob">
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <input type="number" placeholder="Roll No" id="newStudentRollNo">
+                                </div>
+                                <div class="field">
+                                    <select id="newStudentDepartment">
+                                        <option value="Computer Science" selected>Computer Science</option>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <select id="newStudentSemester">
+                                            <option value="0" disabled selected>Semester</option>
+                                            <option value="1st">1st</option>
+                                            <option value="2nd">2nd</option>
+                                            <option value="3rd">3rd</option>
+                                            <option value="4th">4th</option>
+                                            <option value="5th">5th</option>
+                                            <option value="6th">6th</option>
+                                        </select>
+                                    </div>
+                                    <div class="field">
+                                        <select id="newStudentYear">
+                                            <option value="0" disabled selected>Year</option>
+                                            <option value="1st">First</option>
+                                            <option value="2nd">Second</option>
+                                            <option value="3rd">Third</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <input type="email" placeholder="Email" id="newStudentEmail">
+                                </div>
+                                <div class="field">
+                                    <input type="text" placeholder="Mobile" maxlength="10" id="newStudentPhone">
+                                </div>
+                                <div class="action-field">
+                                    <button id="saveNewStudentButton">Save</button>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Student Profile Page -->
+                <div class="page" id="studentProfile" data-page-state="hidden">
+                    <div class="content">
+                        <div class="profile-card">
+                            <div class="close-btn" id="closeStudentProfileButton">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+                                    <g>
+                                        <path
+                                            d="M28.5 9.62L26.38 7.5 18 15.88 9.62 7.5 7.5 9.62 15.88 18 7.5 26.38l2.12 2.12L18 20.12l8.38 8.38 2.12-2.12L20.12 18z">
+                                        </path>
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="left">
+                                <div class="avatar">
+                                    <img src="https://firebasestorage.googleapis.com/v0/b/student-details-manager.appspot.com/o/profile.png?alt=media&token=6ad1a772-09a3-4da6-9e34-086e816f0839">
+                                </div>
+                                <div style="flex:1;"></div>
+                                <div class="form">
+                                    <div class="action-field">
+                                        <button class="edit-btn" id="editBtn" data-id=""
+                                            onclick="editStudent()">Edit</button>
+                                    </div>
+                                    <div class="action-field">
+                                        <button class="delete-btn" id="deleteStudentButton">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right">
+                                <div class="profile-info">
+                                    <div class="details">
+                                        <div class="name" style="text-transform: capitalize ;" id="studentProfileName">
+                                        </div>
+                                        <div class="rollno" id="studentProfileRollNo"></div>
+                                    </div>
+                                </div>
+                                <div class="tab-view" id="studentProfileTabView">
+                                    <div class="tab-container">
+                                        <div class="tab active-tab" onclick="setTab(0)">Details</div>
+                                        <div class="tab" onclick="setTab(1)">Marks</div>
+                                    </div>
+                                    <div class="tab-page-container">
+                                        <div class="tab-page active-tab-page">
+                                            <div class="other-details">
+                                                <div class="data">
+                                                    <div class="name">Department</div>
+                                                    <div class="value" style="text-transform: capitalize ;"
+                                                        id="studentProfileDepartment"></div>
+                                                </div>
+                                                <div class="data">
+                                                    <div class="name">Year | Semester</div>
+                                                    <div class="value" id="studentProfileSemester"></div>
+                                                </div>
+                                                <div class="data">
+                                                    <div class="name">Enrollment Number</div>
+                                                    <div class="value" style="text-transform: uppercase ;"
+                                                        id="studentProfileEnrollment"></div>
+                                                </div>
+                                                <div class="data">
+                                                    <div class="name">Date of Birth</div>
+                                                    <div class="value" id="studentProfileDob"></div>
+                                                </div>
+                                                <div class="data">
+                                                    <div class="name">Gender</div>
+                                                    <div class="value" style="text-transform: uppercase ;"
+                                                        id="studentProfileGender"></div>
+                                                </div>
+                                                <div class="data">
+                                                    <div class="name">Email</div>
+                                                    <div class="value" id="studentProfileEmail"></div>
+                                                </div>
+                                                <div class="data">
+                                                    <div class="name">Mobile Number</div>
+                                                    <div class="value" id="studentProfilePhone"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-page">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>
